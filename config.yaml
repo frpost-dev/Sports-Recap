@@ -1,0 +1,29 @@
+# Nightly Sports Recap - league setup
+# mode:
+#   all     -> every finished game/event that day
+#   ranked  -> only games with a ranked team (rank_max sets the cutoff)
+#   teams   -> only games involving one of the listed teams (substring match, case-insensitive)
+# Slides appear in this order, so put your priorities first.
+
+brand: "@yourrecapaccount"
+timezone: America/New_York
+max_slides: 10            # Instagram carousels allow up to 20; 10 keeps it digestible
+games_per_slide: 6
+daily_csv_max_picks: 12   # how many games Claude picks for the daily CSV
+
+leagues:
+  - {key: cfb,        name: "College Football", path: football/college-football, kind: team, mode: ranked, rank_max: 25, accent: "#C8102E"}
+  - {key: nfl,        name: "NFL",              path: football/nfl,              kind: team, mode: all,    accent: "#1E6FD9"}
+  - {key: nba,        name: "NBA",              path: basketball/nba,            kind: team, mode: all,    accent: "#F58426"}
+  - {key: mlb,        name: "MLB",              path: baseball/mlb,              kind: team, mode: all,    accent: "#2E8B57"}
+  - {key: ufc,        name: "UFC",              path: mma/ufc,                   kind: fight, mode: all,   accent: "#D20A0A"}
+  - {key: f1,         name: "Formula 1",        path: racing/f1,                 kind: race, mode: all,    accent: "#E10600"}
+  - {key: epl,        name: "Premier League",   path: soccer/eng.1,              kind: team, mode: all,    accent: "#7B2D8E"}
+  - {key: ucl,        name: "Champions League", path: soccer/uefa.champions,     kind: team, mode: all,    accent: "#0A3C8C"}
+  - {key: laliga,     name: "La Liga",          path: soccer/esp.1,              kind: team, mode: teams,  teams: ["Barcelona", "Real Madrid"], accent: "#EE8707"}
+  - {key: bundesliga, name: "Bundesliga",       path: soccer/ger.1,              kind: team, mode: teams,  teams: ["Bayern", "Dortmund"],       accent: "#D3010C"}
+  - {key: ligue1,     name: "Ligue 1",          path: soccer/fra.1,              kind: team, mode: teams,  teams: ["Paris Saint-Germain"],      accent: "#004170"}
+  - {key: seriea,     name: "Serie A",          path: soccer/ita.1,              kind: team, mode: teams,  teams: ["Inter", "Juventus", "Napoli", "Milan"], accent: "#008FD7"}
+
+# Boxing has no reliable free data feed, so title fights go in today.yaml (see that file).
+boxing_accent: "#B8860B"

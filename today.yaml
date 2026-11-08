@@ -1,0 +1,21 @@
+# Edit this each morning (or leave it empty to just use config.yaml rules).
+
+# Force-include any game involving these names, even if config.yaml would filter it out.
+# Matches team names, fighter names, and event names (substring, case-insensitive).
+picks: []
+#  - "Bills"
+#  - "Arsenal"
+
+# Set true to cover ONLY the picks above and ignore the league rules.
+only_picks: false
+
+# Games/events to drop even if they'd otherwise qualify.
+skip: []
+
+# Boxing title fights: fill in after the fight ends (results are typed, not fetched).
+boxing: []
+#  - belt: "WBC Heavyweight Title"
+#    winner: "Fighter A"
+#    loser: "Fighter B"
+#    method: "KO"
+#    round: 7
