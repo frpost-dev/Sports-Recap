@@ -1,0 +1,49 @@
+name: Daily scores CSV
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 8 PM during daylight time (EDT)
+    - cron: "0 1 * * *"   # 8 PM during standard time (EST)
+  workflow_dispatch: {}    # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  csv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # GitHub cron is UTC-only. Both crons fire; only the one that lands at 8 PM Eastern proceeds.
+      - name: Gate on 8 PM Eastern
+        id: gate
+        run: |
+          hour=$(TZ=America/New_York date +%H)
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || [ "$hour" = "20" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.go == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: steps.gate.outputs.go == 'true'
+        run: pip install requests pyyaml anthropic
+
+      - name: Build CSV
+        if: steps.gate.outputs.go == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python daily_csv.py
+
+      - name: Commit CSV
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          git config user.name "recap-bot"
+          git config user.email "recap-bot@users.noreply.github.com"
+          git add csv
+          git diff --cached --quiet || git commit -m "Daily scores CSV"
+          git push
